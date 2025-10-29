@@ -29,4 +29,11 @@ router.post('/login',
 );
 router.get('/profile', authMiddleware.authCaptain, captainController.getCaptainProfile);
 router.get('/logout', authMiddleware.authCaptain, captainController.logoutCaptain);
+router.put('/status', 
+  authMiddleware.authCaptain,
+  [
+    body('status').isIn(['online', 'offline', 'on-trip']).withMessage('Status must be one of: online, offline, on-trip'),
+  ],
+  captainController.updateCaptainStatus
+);
 module.exports = router;
