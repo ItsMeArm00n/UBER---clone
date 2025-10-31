@@ -4,12 +4,10 @@ import appLogo2 from '../assets/app logo2.png'
 import { UserDataContext } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { set } from 'mongoose'
 
 const UserLogin = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [userData, setUserData] = useState({})
   const { user, setUser } = useContext(UserDataContext)
   const navigate= useNavigate()
   const submitHandler = async (e) => {

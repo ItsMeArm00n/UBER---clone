@@ -58,7 +58,7 @@ const CaptainHome = () => {
 
         {/* Logout icon */}
         <Link
-          to='/captainlogin'
+          to='/captain/logout'
           className='h-8 w-8 flex items-center justify-center rounded-md border border-gray-300 bg-white'
         >
           <i className='text-lg ri-logout-box-r-line'></i>

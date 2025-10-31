@@ -18,11 +18,11 @@ const CaptainContext = ({ children }) => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.put(
-                `${import.meta.env.VITE_BASE_URL}/captain/status`,
+                `${import.meta.env.VITE_BASE_URL}/captains/status`,
                 { status },
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `bearer ${token}`
                     }
                 }
             );
