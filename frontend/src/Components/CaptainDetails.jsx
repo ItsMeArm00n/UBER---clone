@@ -46,10 +46,10 @@ const CaptainDetails = () => {
       </div>
 
       {/* Status Toggle */}
-      <div className='mt-6 flex items-center justify-between p-4 bg-gray-50 rounded-xl'>
+      <div className='mt-4 flex items-center justify-between p-3 bg-gray-50 rounded-xl'>
         <div className='flex items-center gap-3'>
           <div className={`h-3 w-3 rounded-full ${isOnline ? 'bg-green-500' : 'bg-gray-400'}`}></div>
-          <span className='text-lg font-medium'>{isOnline ? 'Online' : 'Offline'}</span>
+          <span className='text-base font-medium'>{isOnline ? 'Online' : 'Offline'}</span>
         </div>
         <button
           onClick={handleStatusToggle}
@@ -66,7 +66,7 @@ const CaptainDetails = () => {
         </button>
       </div>
 
-      <div className='mt-6 flex p-3 bg-gray-100 rounded-xl justify-center gap-5 items-center'>
+      <div className='mt-4 flex p-3 bg-gray-100 rounded-xl justify-center gap-5 items-center'>
         <div className='text-center'>
           <i className='text-3xl mb-2 ri-timer-2-line'></i>
           <h5 className='text-lg font-medium'>10.2</h5>
