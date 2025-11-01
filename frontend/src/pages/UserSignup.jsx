@@ -45,61 +45,82 @@ const UserSignup = () => {
   }
 
   return (
-    <div className="h-screen p-6 flex flex-col justify-between bg-white">
-      {/* Logo at Top-Left */}
+    <div className="min-h-screen p-7 flex flex-col justify-between bg-white">
+      {/* Logo */}
       <div>
-        <img src={appLogo2} alt="Safar Logo" className="w-24 h-24 mb-1" />
+        <img src={appLogo2} alt="Safar Logo" className="w-24 h-24 mb-8" />
 
-        <form onSubmit={submitHandler} className="max-w-md mx-auto">
-          <h3 className="text-lg w-full font-medium mb-2">What's your name</h3>
-          <div className='flex gap-4 mb-6'>
+        <form onSubmit={submitHandler} className="max-w-md mx-auto space-y-6">
+          {/* Name Section */}
+          <div>
+            <h3 className="text-xl font-medium mb-4">What's your name</h3>
+            <div className='flex gap-4'>
+              <Input
+                type="text"
+                placeholder="Firstname"
+                value={firstname}
+                onChange={(e) => setFirstname(e.target.value)}
+                required
+                halfWidth
+                containerClassName="w-1/2"
+                className="mb-0"
+                size="lg"
+              />
+              <Input
+                type="text"
+                placeholder="Lastname"
+                value={lastname}
+                onChange={(e) => setLastname(e.target.value)}
+                required
+                halfWidth
+                containerClassName="w-1/2"
+                className="mb-0"
+                size="lg"
+              />
+            </div>
+          </div>
+
+          {/* Email Section */}
+          <div>
             <Input
-              type="text"
-              placeholder="Firstname"
-              value={firstname}
-              onChange={(e) => setFirstname(e.target.value)}
+              label="What's your email"
+              type="email"
+              placeholder="email@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
-              halfWidth
-              containerClassName="w-1/2"
+              size="lg"
               className="mb-0"
-            />
-            <Input
-              type="text"
-              placeholder="Lastname"
-              value={lastname}
-              onChange={(e) => setLastname(e.target.value)}
-              required
-              halfWidth
-              containerClassName="w-1/2"
-              className="mb-0"
+              labelClassName="text-xl"
             />
           </div>
 
-          <Input
-            label="What's your email"
-            type="email"
-            placeholder="email@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          {/* Password Section */}
+          <div>
+            <Input
+              label="Create Password"
+              type="password"
+              placeholder="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              size="lg"
+              className="mb-0"
+              labelClassName="text-xl"
+            />
+          </div>
 
-          <Input
-            label="Create Password"
-            type="password"
-            placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          {/* Submit Button */}
+          <div className="pt-2">
+            <Button type="submit" variant="primary" fullWidth>
+              Create account
+            </Button>
+          </div>
 
-          <Button type="submit" variant="primary" fullWidth>
-            Create account
-          </Button>
-
-          <p className="text-center text-lg">
+          {/* Login Link */}
+          <p className="text-center text-base pt-2">
             Already have an account?{' '}
-            <Link to="/login" className="text-blue-600 hover:underline">
+            <Link to="/login" className="text-blue-600 hover:underline font-medium">
               Login
             </Link>
           </p>
@@ -107,7 +128,7 @@ const UserSignup = () => {
       </div>
 
       {/* Terms Text */}
-      <div>
+      <div className="mt-8">
         <p className='text-[10px] text-gray-500 leading-tight'>
           This site is protected by reCAPTCHA and the <span className='underline'>Google Privacy Policy</span> and <span className='underline'>Terms of Service</span> apply.
         </p>

@@ -9,6 +9,7 @@ const Input = ({
   required = false,
   name,
   id,
+  size = 'md', // 'sm' | 'md' | 'lg'
   className = '',
   containerClassName = '',
   labelClassName = '',
@@ -17,7 +18,12 @@ const Input = ({
 }) => {
   const inputId = id || name || label?.toLowerCase().replace(/\s+/g, '-')
   
-  const baseStyles = 'bg-[#eeeeee] rounded px-4 py-2 border text-lg placeholder:text-base focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all'
+  const sizeStyles = {
+    sm: 'py-2 text-base',
+    md: 'py-2 text-lg',
+    lg: 'py-3 text-lg',
+  }
+  const baseStyles = `bg-[#eeeeee] rounded px-4 border placeholder:text-base focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all ${sizeStyles[size] || sizeStyles.md}`
   const widthStyles = halfWidth ? 'w-1/2' : 'w-full'
   const marginStyles = 'mb-6'
   
