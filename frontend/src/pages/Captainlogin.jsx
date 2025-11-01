@@ -4,6 +4,8 @@ import appLogo3 from '../assets/app logo3.png'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { CaptainDataContext } from '../context/CaptainContext'
+import Button from '../Components/Button'
+import Input from '../Components/Input'
 
 const CaptainLogin = () => {
   const [email, setEmail] = useState('')
@@ -38,32 +40,28 @@ const CaptainLogin = () => {
         <img src={appLogo3} alt="Safar Logo" className="w-24 h-24 mb-2" />
 
         <form onSubmit={submitHandler} className="max-w-md">
-          <h3 className="text-lg font-semibold mb-2">What's our Captain's email</h3>
-          <input
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-lg"
+          <Input
+            label="What's our Captain's email"
             type="email"
             placeholder="email@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="mb-5"
           />
 
-          <h3 className="text-lg font-semibold mb-2">Enter Password</h3>
-          <input
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="bg-[#eeeeee] mb-6 rounded px-4 py-2 border w-full text-lg"
+          <Input
+            label="Enter Password"
             type="password"
             placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
 
-          <button
-            type="submit"
-            className="bg-[#111] text-white font-semibold mb-4 rounded px-4 py-2 w-full text-lg"
-          >
+          <Button type="submit" variant="primary" fullWidth>
             Login
-          </button>
+          </Button>
 
           <p className="text-center text-base">
             Join a fleet?{' '}
@@ -76,11 +74,10 @@ const CaptainLogin = () => {
 
       {/* Bottom switch button */}
       <div>
-        <Link
-          to="/Login"
-          className="bg-[#f3c164] flex items-center justify-center text-white font-semibold rounded px-4 py-2 w-full text-lg"
-        >
-          Sign in as User
+        <Link to="/Login">
+          <Button variant="warning" fullWidth>
+            Sign in as User
+          </Button>
         </Link>
       </div>
     </div>
