@@ -4,6 +4,8 @@ import appLogo3 from '../assets/app logo3.png';
 import { CaptainDataContext } from '../context/CaptainContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Button from '../Components/Button';
+import Input from '../Components/Input';
 const CaptainSignup = () => {
 
   const navigate = useNavigate();
@@ -70,103 +72,105 @@ const CaptainSignup = () => {
       <div>
         <h3 className="text-lg font-semibold mb-2">What's our Captain's name</h3>
         <div className="flex gap-3">
-          <input
-            required
+          <Input
             type="text"
             placeholder="First name"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-            className="bg-gray-100 rounded px-4 py-3 w-1/2 text-sm border border-gray-300 focus:outline-none"
+            required
+            halfWidth
+            containerClassName="w-1/2"
+            className="mb-0 text-sm py-3"
           />
-          <input
-            
+          <Input
             type="text"
             placeholder="Last name"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
-            className="bg-gray-100 rounded px-4 py-3 w-1/2 text-sm border border-gray-300 focus:outline-none"
+            halfWidth
+            containerClassName="w-1/2"
+            className="mb-0 text-sm py-3"
           />
         </div>
       </div>
 
       {/* Email */}
-      <div>
-        <h3 className="text-lg font-semibold mb-2">What's our Captain's email</h3>
-        <input
-          required
-          type="email"
-          placeholder="email@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="bg-gray-100 rounded px-4 py-3 w-full text-sm border border-gray-300 focus:outline-none"
-        />
-      </div>
+      <Input
+        label="What's our Captain's email"
+        type="email"
+        placeholder="email@example.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        className="mb-0 text-sm py-3"
+      />
 
       {/* Password */}
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Enter Password</h3>
-        <input
-          required
-          type="password"
-          placeholder="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="bg-gray-100 rounded px-4 py-3 w-full text-sm border border-gray-300 focus:outline-none"
-        />
-      </div>
+      <Input
+        label="Enter Password"
+        type="password"
+        placeholder="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        className="mb-0 text-sm py-3"
+      />
 
       {/* Vehicle Info */}
       <div>
         <h3 className="text-lg font-semibold mb-2">Vehicle Information</h3>
         <div className="flex gap-3">
-          <input
-            required
+          <Input
             type="text"
             placeholder="Vehicle Color"
             value={vehicleColor}
             onChange={(e) => setVehicleColor(e.target.value)}
-            className="bg-gray-100 rounded px-4 py-3 w-1/2 text-sm border border-gray-300 focus:outline-none"
-          />
-          <input
             required
+            halfWidth
+            containerClassName="w-1/2"
+            className="mb-0 text-sm py-3"
+          />
+          <Input
             type="text"
             placeholder="Vehicle Plate"
             value={vehiclePlate}
             onChange={(e) => setVehiclePlate(e.target.value)}
-            className="bg-gray-100 rounded px-4 py-3 w-1/2 text-sm border border-gray-300 focus:outline-none"
+            required
+            halfWidth
+            containerClassName="w-1/2"
+            className="mb-0 text-sm py-3"
           />
         </div>
 
         <div className="flex gap-3 mt-4">
-          <input
-            required
+          <Input
             type="number"
             placeholder="Vehicle Capacity"
             value={vehicleCapacity}
             onChange={(e) => setVehicleCapacity(e.target.value)}
-            className="bg-gray-100 rounded px-4 py-3 w-1/2 text-sm border border-gray-300 focus:outline-none"
+            required
+            halfWidth
+            containerClassName="w-1/2"
+            className="mb-0 text-sm py-3"
           />
           <select
             required
             value={vehicleType}
             onChange={(e) => setVehicleType(e.target.value)}
-            className="bg-gray-100 rounded px-4 py-3 w-1/2 text-sm border border-gray-300 focus:outline-none"
+            className="bg-[#eeeeee] rounded px-4 py-3 w-1/2 text-sm border focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all"
           >
             <option value="" disabled>Select Vehicle</option>
             <option value="car">Car</option>
             <option value="auto">Auto</option>
-            <option value="bike">Bike</option>
+            <option value="motorcycle">Motorcycle</option>
           </select>
         </div>
       </div>
 
       {/* Submit */}
-      <button
-        type="submit"
-        className="bg-black hover:bg-gray-800 text-white font-semibold rounded px-4 py-3 w-full text-sm transition-colors"
-      >
+      <Button type="submit" variant="primary" fullWidth size="medium">
         Create Captain Account
-      </button>
+      </Button>
 
       {/* Login Link */}
       <p className="text-center text-sm">
