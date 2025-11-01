@@ -50,7 +50,7 @@ module.exports.loginCaptain = async (req, res, next) => {
     res.status(200).json({ token, captain });
 }
 module.exports.getCaptainProfile = async (req, res, next) => {
-    res.status(200).json(req.captain);
+    res.status(200).json({ captain: req.captain });
 }
 
 module.exports.logoutCaptain = async (req, res, next) => {
@@ -62,4 +62,25 @@ module.exports.logoutCaptain = async (req, res, next) => {
     await blacklistTokenModel.create({ token });
     res.clearCookie('token');
     res.status(200).json({ message: 'Logged out successfully' });
+}
+
+module.exports.updateCaptainStatus = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+        const { status } = req.body;
+        const captainId = req.captain._id;
+
+        const updatedCaptain = await captainService.updateCaptainStatus(captainId, status);
+        
+        res.status(200).json({ 
+            message: 'Status updated successfully', 
+            captain: updatedCaptain 
+        });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
 }
