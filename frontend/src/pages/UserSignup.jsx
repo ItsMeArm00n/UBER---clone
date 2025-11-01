@@ -48,7 +48,7 @@ const UserSignup = () => {
     <div className="min-h-screen p-7 flex flex-col justify-between bg-white">
       {/* Logo */}
       <div>
-        <img src={appLogo2} alt="Safar Logo" className="w-24 h-24 mb-4" />
+        <img src={appLogo2} alt="Safar Logo" className="w-24 h-24 mb-2" />
 
         <form onSubmit={submitHandler} className="max-w-lg mx-auto space-y-6">
           {/* Name Section */}
