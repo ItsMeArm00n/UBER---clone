@@ -50,21 +50,19 @@ const UserSignup = () => {
       <div>
         <img src={appLogo2} alt="Safar Logo" className="w-24 h-24 mb-8" />
 
-        <form onSubmit={submitHandler} className="max-w-md mx-auto space-y-6">
+        <form onSubmit={submitHandler} className="max-w-lg mx-auto space-y-6">
           {/* Name Section */}
           <div>
             <h3 className="text-xl font-medium mb-4">What's your name</h3>
-            <div className='flex gap-4'>
+            <div className='flex'>
               <Input
                 type="text"
                 placeholder="Firstname"
                 value={firstname}
                 onChange={(e) => setFirstname(e.target.value)}
                 required
-                halfWidth
-                containerClassName="w-1/2"
-                className="mb-0"
                 size="lg"
+                className="mb-0 flex-1 mr-2"
               />
               <Input
                 type="text"
@@ -72,10 +70,8 @@ const UserSignup = () => {
                 value={lastname}
                 onChange={(e) => setLastname(e.target.value)}
                 required
-                halfWidth
-                containerClassName="w-1/2"
-                className="mb-0"
                 size="lg"
+                className="mb-0 flex-1 ml-2"
               />
             </div>
           </div>

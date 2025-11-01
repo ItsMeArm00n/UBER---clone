@@ -21,7 +21,7 @@ const Input = ({
   const sizeStyles = {
     sm: 'py-2 text-base',
     md: 'py-2 text-lg',
-    lg: 'py-3 text-lg',
+    lg: 'py-4 text-xl',
   }
   const baseStyles = `bg-[#eeeeee] rounded px-4 border placeholder:text-base focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all ${sizeStyles[size] || sizeStyles.md}`
   const widthStyles = halfWidth ? 'w-1/2' : 'w-full'
