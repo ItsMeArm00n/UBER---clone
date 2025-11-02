@@ -56,10 +56,25 @@ The project follows a **client–server architecture**:
 - Track ride history and total earnings  
 
 ### 🗺️ Map & Real-Time Features
-- Integrated with **OpenStreetMap**  
-- Dynamic **route visualization** using Leaflet  
-- **Address autocomplete** for pickup/destination  
-- Real-time **location tracking and markers**  
+- Integrated with **OpenStreetMap** (OSM)
+- **Real-time GPS tracking** for captains with high-accuracy geolocation
+- **Custom markers** for captain location, pickup, and drop-off points
+- Dynamic **route visualization** using OSRM (Open Source Routing Machine)
+- **Interactive controls**: Zoom In/Out, Recenter to current location
+- **Distance & ETA display** with live route calculation
+- **Battery-optimized** GPS tracking with efficient tile caching
+- **Auto-fit bounds** to display entire route in viewport
+- Smooth animations with GPU-accelerated rendering
+
+#### 🎯 Captain Map Features
+- **Real-time location updates** using Geolocation API watchPosition
+- **Custom captain marker** (blue car icon) for driver's current position
+- **Pickup marker** (green pin with 'P' label)
+- **Drop-off marker** (red pin with 'D' label)
+- **Route polyline** displaying optimal path between locations
+- **Performance optimized** for minimal battery and data usage
+
+> **Note**: For detailed OSM integration documentation, see [OSM_INTEGRATION_GUIDE.md](./OSM_INTEGRATION_GUIDE.md)
 
 ---
 

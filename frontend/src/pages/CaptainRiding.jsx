@@ -4,10 +4,25 @@ import appLogo3 from '../assets/app logo3.png'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import FinishRide from '../Components/FinishRide'
+import CaptainMap from '../Components/CaptainMap'
 
 const CaptainRiding = () => {
   const [finishRidePanel, setFinishRidePanel] = useState(false)
-  const finishRidePanelRef = useRef(null)  
+  const finishRidePanelRef = useRef(null)
+  
+  // Sample pickup and dropoff locations - replace with actual data from your ride context
+  const pickupLocation = {
+    lat: 28.6139,
+    lng: 77.2090,
+    address: "Pickup Point - Connaught Place, New Delhi"
+  }
+  
+  const dropoffLocation = {
+    lat: 28.5355,
+    lng: 77.3910,
+    address: "Drop-off Point - Noida Sector 18"
+  }
+  
   useGSAP(() => {
     if (finishRidePanel) {
       gsap.to(finishRidePanelRef.current, {
@@ -40,12 +55,13 @@ const CaptainRiding = () => {
         </Link>
       </div>
 
-      {/* Map / Ride background */}
+      {/* Map with route, pickup and dropoff */}
       <div className="flex-1">
-        <img
-          className="h-full w-full object-cover"
-          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-          alt="Riding Background"
+        <CaptainMap
+          pickupLocation={pickupLocation}
+          dropoffLocation={dropoffLocation}
+          showRoute={true}
+          autoFitBounds={true}
         />
       </div>
 

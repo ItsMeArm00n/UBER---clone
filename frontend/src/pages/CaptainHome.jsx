@@ -4,6 +4,7 @@ import appLogo3 from '../assets/app logo3.png'
 import CaptainDetails from '../Components/CaptainDetails'
 import RidePopUp from '../Components/RidePopUp'
 import ConfirmRidePopUp from '../Components/ConfirmRidePopUp'
+import CaptainMap from '../Components/CaptainMap'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 
@@ -65,13 +66,9 @@ const CaptainHome = () => {
         </Link>
       </div>
 
-      {/* Top background */}
+      {/* OpenStreetMap - Captain's current location */}
       <div className='h-3/5'>
-        <img
-          className='h-full w-full object-cover'
-          src='https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif'
-          alt=''
-        />
+        <CaptainMap />
       </div>
 
       {/* Bottom card */}
