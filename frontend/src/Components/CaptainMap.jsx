@@ -65,7 +65,7 @@ const RecenterButton = ({ center, onRecenter }) => {
   return (
     <button
       onClick={handleRecenter}
-      className="absolute bottom-24 right-3 z-[1000] bg-white hover:bg-gray-100 transition-colors p-3 rounded-lg shadow-lg border border-gray-200"
+      className="absolute bottom-40 right-3 z-[1000] bg-white hover:bg-gray-100 transition-colors p-3 rounded-lg shadow-lg border border-gray-200"
       title="Recenter to current location"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
