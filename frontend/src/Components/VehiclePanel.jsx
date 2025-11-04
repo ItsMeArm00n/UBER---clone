@@ -24,7 +24,8 @@ const VehiclePanel = (props) => {
           
           console.log('Sending fare request:', payload);
           
-          const response = await fetch('http://localhost:3000/fares/estimate', {
+          const baseURL = import.meta.env.VITE_BASE_URL || 'http://localhost:4000';
+          const response = await fetch(`${baseURL}/fares/estimate`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

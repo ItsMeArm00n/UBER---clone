@@ -10,23 +10,41 @@ import Input from '../Components/Input'
 const UserLogin = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
   const { user, setUser } = useContext(UserDataContext)
   const navigate= useNavigate()
+  
   const submitHandler = async (e) => {
     e.preventDefault();
+    setError(''); // Clear previous errors
+    
     const userData = {
       email: email,
       password: password
     }
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userData)
-    if (response.status === 200) {
-      const data = response.data
-      setUser(data.user)
-      localStorage.setItem('token', data.token)
-      navigate('/home')
+    
+    try {
+      console.log('Attempting login with:', { email }); // Don't log password
+      console.log('API URL:', `${import.meta.env.VITE_BASE_URL}/users/login`);
+      
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userData)
+      
+      console.log('Login response:', response.status);
+      
+      if (response.status === 200) {
+        const data = response.data
+        setUser(data.user)
+        localStorage.setItem('token', data.token)
+        navigate('/home')
+      }
+      
+      setEmail('')
+      setPassword('')
+    } catch (err) {
+      console.error('Login error:', err);
+      console.error('Error response:', err.response?.data);
+      setError(err.response?.data?.message || 'Login failed. Please check your credentials and try again.');
     }
-    setEmail('')
-    setPassword('')
   }
   return (
     <div className="h-screen p-6 flex flex-col justify-between bg-white">
@@ -35,6 +53,12 @@ const UserLogin = () => {
         <img src={appLogo2} alt="Safar Logo" className="w-24 h-24 mb-1" />
 
         <form onSubmit={(e) => submitHandler(e)} className="max-w-md mx-auto">
+          {error && (
+            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+              {error}
+            </div>
+          )}
+          
           <Input
             label="What's your email"
             type="email"
