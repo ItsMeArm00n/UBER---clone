@@ -18,6 +18,23 @@ const CaptainHome = () => {
 
   // Store current ride request data
   const [currentRide, setCurrentRide] = useState(null)
+  
+  // Load accepted ride data from localStorage for map display
+  const [acceptedRide, setAcceptedRide] = useState(null)
+
+  useEffect(() => {
+    // Check if there's an accepted ride in localStorage
+    const storedRide = localStorage.getItem('currentRide')
+    if (storedRide) {
+      try {
+        const rideData = JSON.parse(storedRide)
+        setAcceptedRide(rideData)
+        console.log('📍 Loaded accepted ride for map:', rideData)
+      } catch (e) {
+        console.error('Error parsing stored ride:', e)
+      }
+    }
+  }, [confirmRidePopUpPanel]) // Reload when OTP screen opens/closes
 
   // Connect to Socket.IO as captain and listen for new ride requests
   useEffect(() => {
@@ -109,7 +126,20 @@ const CaptainHome = () => {
 
       {/* OpenStreetMap - Captain's current location */}
       <div className='h-3/5'>
-        <CaptainMap />
+        <CaptainMap 
+          pickupLocation={acceptedRide?.pickup ? {
+            lat: acceptedRide.pickup.lat,
+            lng: acceptedRide.pickup.lng,
+            address: acceptedRide.pickup.address
+          } : null}
+          dropoffLocation={acceptedRide?.dropoff ? {
+            lat: acceptedRide.dropoff.lat,
+            lng: acceptedRide.dropoff.lng,
+            address: acceptedRide.dropoff.address
+          } : null}
+          showRoute={!!acceptedRide}
+          autoFitBounds={!!acceptedRide}
+        />
       </div>
 
       {/* Bottom card */}

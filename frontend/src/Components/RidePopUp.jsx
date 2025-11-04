@@ -55,8 +55,8 @@ const RidePopUp = (props) => {
       localStorage.setItem('currentRide', JSON.stringify(rideData));
     }
     
-    // Just close the popup - captain can see ride details on main screen
-    // ConfirmRidePopUp (with OTP) will be shown when captain arrives at pickup
+    // Open the OTP confirmation popup (captain can skip OTP if needed)
+    props.setConfirmRidePopUpPanel(true);
     props.setRidePopUpPanel(false);
   };
   
