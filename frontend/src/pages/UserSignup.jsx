@@ -11,12 +11,18 @@ const UserSignup = () => {
   const [password, setPassword] = useState('')
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
   const { user, setUser } = useContext(UserDataContext)
 
   const submitHandler = async (e) => {
     e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    console.log('Signup form submitted')
 
     const newUser = {
       fullname: {
@@ -27,12 +33,17 @@ const UserSignup = () => {
       password,
     }
 
-    
+    console.log('Sending signup request:', newUser)
+
+    try {
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser)
+      console.log('Signup response:', response)
+      
       if (response.status === 201) {
         const data = response.data
         setUser(data.user)
         localStorage.setItem('token', data.token)
+        console.log('Signup successful, navigating to /home')
         navigate('/home')
       }
 
@@ -41,7 +52,12 @@ const UserSignup = () => {
       setLastname('')
       setEmail('')
       setPassword('')
-   
+    } catch (error) {
+      console.error('Signup error:', error)
+      setError(error.response?.data?.message || 'Failed to create account. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -51,6 +67,13 @@ const UserSignup = () => {
         <img src={appLogo2} alt="Safar Logo" className="w-24 h-24 mb-2" />
 
         <form onSubmit={submitHandler} className="max-w-lg mx-auto space-y-6">
+          {/* Error Message */}
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+              {error}
+            </div>
+          )}
+
           {/* Name Section */}
           <div>
             <h3 className="text-xl font-medium mb-4">What's your name</h3>
@@ -108,8 +131,8 @@ const UserSignup = () => {
 
           {/* Submit Button */}
           <div className="pt-2">
-            <Button type="submit" variant="primary" fullWidth>
-              Create account
+            <Button type="submit" variant="primary" fullWidth disabled={loading}>
+              {loading ? 'Creating account...' : 'Create account'}
             </Button>
           </div>
 

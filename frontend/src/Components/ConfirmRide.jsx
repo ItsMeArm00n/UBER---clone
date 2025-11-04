@@ -1,11 +1,72 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import socket from '../utils/socket';
+import { UserDataContext } from '../context/UserContext';
 
 const ConfirmRide = (props) => {
+  const { user } = useContext(UserDataContext);
+  
   // Get dynamic fare from localStorage
   const selectedFare = localStorage.getItem('selectedFare') || 
                        localStorage.getItem('fareCar') || 
                        localStorage.getItem('fareBase') || 
                        '199';
+  
+  const handleConfirmRide = () => {
+    // Get ride details from localStorage and props
+    const pickupAddress = localStorage.getItem('pickupAddress') || 'Pickup Location';
+    const dropoffAddress = localStorage.getItem('dropoffAddress') || 'Dropoff Location';
+    const pickupLat = localStorage.getItem('pickupLat');
+    const pickupLng = localStorage.getItem('pickupLng');
+    const dropoffLat = localStorage.getItem('dropoffLat');
+    const dropoffLng = localStorage.getItem('dropoffLng');
+    const vehicleType = localStorage.getItem('selectedVehicleType') || 'Car';
+    const userName = user?.fullname?.firstname || localStorage.getItem('userName') || 'User';
+    
+    // Store userName for later use
+    if (user?.fullname?.firstname) {
+      localStorage.setItem('userName', user.fullname.firstname);
+    }
+    
+    // Generate a unique ride ID
+    const rideId = `ride_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Broadcast ride request to all online drivers
+    // Backend expects: { rideId, pickup, dropoff, user, fare }
+    const rideData = {
+      rideId,
+      pickup: {
+        lat: parseFloat(pickupLat),
+        lng: parseFloat(pickupLng),
+        address: pickupAddress
+      },
+      dropoff: {
+        lat: parseFloat(dropoffLat),
+        lng: parseFloat(dropoffLng),
+        address: dropoffAddress
+      },
+      user: {
+        _id: user?._id,
+        name: userName
+      },
+      fare: selectedFare,
+      vehicleType,
+      timestamp: Date.now()
+    };
+    
+    console.log('Broadcasting ride request:', rideData);
+    socket.emit('ride:broadcast', rideData);
+    
+    // Join the ride room to receive acceptance notifications
+    socket.emit('ride:join', { rideId });
+    console.log(`User joined ride room: ride:${rideId}`);
+    
+    // Store ride ID for later
+    localStorage.setItem('currentRideId', rideId);
+    
+    // Update UI to show "Looking for driver"
+    props.setVehicleFound(true);
+    props.setConfirmRidePanel(false);
+  };
   
   return (
     <div>
@@ -54,10 +115,7 @@ const ConfirmRide = (props) => {
           </div>
         </div>
 
-        <button onClick={()=>{
-          props.setVehicleFound(true)
-          props.setConfirmRidePanel(false)
-        }}
+        <button onClick={handleConfirmRide}
           className='w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg '
         >
           Confirm

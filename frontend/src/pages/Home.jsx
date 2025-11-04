@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import appLogo2 from '../assets/app logo2.png';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -11,8 +11,11 @@ import LookingForDriver from '../Components/LookingForDriver';
 import WaitingForDriver from '../Components/WaitingForDriver';
 import Map from '../Components/Map';
 import { searchLocation } from '../utils/geocoding';
+import socket from '../utils/socket';
+import { UserDataContext } from '../context/UserContext';
 
 const Home = () => {
+  const { user } = useContext(UserDataContext);
   const [pickupText, setPickupText] = useState(''); // readable address shown in input
   const [destinationText, setDestinationText] = useState('');
   const [panelOpen, setPanelOpen] = useState(false);
@@ -29,6 +32,39 @@ const Home = () => {
   const [confirmRidePanel, setConfirmRidePanel] = useState(false);
   const [vehicleFound, setVehicleFound] = useState(false);
   const [waitingForDriver, setWaitingForDriver] = useState(false);
+  
+  // Socket state for driver info and location
+  const [driverInfo, setDriverInfo] = useState(null);
+  const [driverLocation, setDriverLocation] = useState(null);
+  
+  // Socket.io listeners for ride acceptance and driver location
+  useEffect(() => {
+    // Listen for ride acceptance from driver
+    const handleRideAccepted = (data) => {
+      console.log('Ride accepted by driver:', data);
+      setDriverInfo(data.driver);
+      setVehicleFound(false);
+      setWaitingForDriver(true);
+      
+      // Join the ride room for location updates
+      socket.emit('ride:join', { rideId: data.rideId });
+    };
+
+    // Listen for driver's real-time location
+    const handleDriverLocation = (location) => {
+      console.log('Driver location update:', location);
+      setDriverLocation(location);
+    };
+
+    socket.on('ride:accepted', handleRideAccepted);
+    socket.on('driver:location', handleDriverLocation);
+
+    return () => {
+      socket.off('ride:accepted', handleRideAccepted);
+      socket.off('driver:location', handleDriverLocation);
+    };
+  }, []);
+  
     // Add a function to update the query in the parent component
   const updateQuery = (text) => {
     if (activeField === 'pickup') {
