@@ -15,19 +15,28 @@ const VehiclePanel = (props) => {
         setLoading(true);
         setError(null);
         try {
+          const payload = {
+            pickupLat: props.selectedLocations.pickup.lat,
+            pickupLng: props.selectedLocations.pickup.lng,
+            dropoffLat: props.selectedLocations.destination.lat,
+            dropoffLng: props.selectedLocations.destination.lng,
+          };
+          
+          console.log('Sending fare request:', payload);
+          
           const response = await fetch('http://localhost:3000/fares/estimate', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              pickupLat: props.selectedLocations.pickup.lat,
-              pickupLng: props.selectedLocations.pickup.lng,
-              dropoffLat: props.selectedLocations.destination.lat,
-              dropoffLng: props.selectedLocations.destination.lng,
-            }),
+            body: JSON.stringify(payload),
           });
+          
+          console.log('Response status:', response.status);
+          
           const data = await response.json();
+          console.log('Response data:', data);
+          
           if (data.estimatedFare) {
             // Apply multipliers for different vehicles
             const nextFares = {
@@ -46,7 +55,7 @@ const VehiclePanel = (props) => {
           }
         } catch (error) {
           console.error('Error fetching fare:', error);
-          setError('Unable to calculate fare');
+          setError(`Unable to calculate fare: ${error.message}`);
         } finally {
           setLoading(false);
         }
