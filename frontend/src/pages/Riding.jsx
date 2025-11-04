@@ -1,7 +1,27 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import socket from '../utils/socket'
 
 const Riding = () => {
+  const [driverLocation, setDriverLocation] = useState(null)
+
+  useEffect(() => {
+    const rideId = localStorage.getItem('rideId')
+    if (rideId) {
+      socket.emit('ride:join', { rideId })
+    }
+    const onDriverLocation = (payload) => {
+      // only handle if matches rideId (if provided)
+      if (rideId && payload.rideId && payload.rideId !== rideId) return
+      setDriverLocation({ lat: payload.lat, lng: payload.lng })
+      // for debugging
+      console.log('driver:location', payload)
+    }
+    socket.on('driver:location', onDriverLocation)
+    return () => {
+      socket.off('driver:location', onDriverLocation)
+    }
+  }, [])
   return (
     <div className='h-screen flex flex-col'>
         <Link to='/home'className='fixed right-3 top-3 h-10 w-10 bg-white flex items-center justify-center rounded-full shadow-md'>
@@ -48,10 +68,36 @@ const Riding = () => {
             <div className='flex items-center gap-5 p-3'>
               <i className="text-lg ri-currency-line"></i>
               <div>
-                <h3 className='text-lg font-medium'>₹199</h3>
+                <h3 className='text-lg font-medium'>
+                  {(() => {
+                    // prefer an explicitly selected fare from VehiclePanel
+                    const selectedFare = Number(localStorage.getItem('selectedFare'))
+                    if (Number.isFinite(selectedFare) && selectedFare > 0) {
+                      return `₹${selectedFare}`
+                    }
+                    // fallback to per-vehicle stored values
+                    const vehicle = (localStorage.getItem('selectedVehicleType') || 'car').toLowerCase()
+                    const byVehicle = Number(localStorage.getItem(
+                      vehicle === 'bike' ? 'fareBike' : vehicle === 'auto' ? 'fareAuto' : 'fareCar'
+                    ))
+                    if (Number.isFinite(byVehicle) && byVehicle > 0) {
+                      return `₹${byVehicle}`
+                    }
+                    // ultimate fallback to base estimate
+                    const base = Number(localStorage.getItem('fareBase'))
+                    if (Number.isFinite(base) && base > 0) return `₹${Math.round(base)}`
+                    return 'Calculating…'
+                  })()}
+                </h3>
                 <p className='text-sm -mt-1 text-gray-600'>Cash</p>
               </div>
             </div>
+
+            {driverLocation && (
+              <div className='mt-2 p-3 rounded-md bg-blue-50 text-blue-700 text-sm'>
+                Live driver location: {driverLocation.lat.toFixed(5)}, {driverLocation.lng.toFixed(5)}
+              </div>
+            )}
           </div>
         </div>
 

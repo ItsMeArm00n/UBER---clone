@@ -1,6 +1,12 @@
 import React from 'react'
 
 const WaitingForDriver = (props) => {
+  // Get dynamic fare from localStorage
+  const selectedFare = localStorage.getItem('selectedFare') || 
+                       localStorage.getItem('fareCar') || 
+                       localStorage.getItem('fareBase') || 
+                       '199';
+  
   return (
     <div>
       <h5
@@ -48,7 +54,7 @@ const WaitingForDriver = (props) => {
           <div className='flex items-center gap-5 p-3'>
             <i className="text-lg ri-currency-line"></i>
             <div>
-              <h3 className='text-lg font-medium'>₹199</h3>
+              <h3 className='text-lg font-medium'>₹{selectedFare}</h3>
               <p className='text-sm -mt-1 text-gray-600'>Cash</p>
             </div>
           </div>
