@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import LoadingSpinner from './LoadingSpinner';
 
 const VehiclePanel = (props) => {
   const [fares, setFares] = useState({
@@ -65,40 +67,81 @@ const VehiclePanel = (props) => {
     fetchFare();
   }, [props.selectedLocations]);
   return (
-    <div>
-        <h5 className='p-1 text-center w-[93%] absolute top-0'onClick={()=>{
-              props.setVehiclePanel(false)
-        }}><i className="text-3xl text-gray-400 ri-arrow-down-wide-line"></i></h5>
-        <h3 className='text-2xl font-semibold mb-5'>Choose a Vehicle</h3>
-        {error && <p className='text-red-500 text-sm mb-3'>{error}</p>}
-        {loading && <p className='text-gray-500 text-sm mb-3 animate-pulse'>Calculating fares...</p>}
-    <div onClick={()=>{
-      // Store selected vehicle and location data
-      try { 
-        localStorage.setItem('selectedVehicleType', 'car'); 
-        localStorage.setItem('selectedFare', String(fares.car)); 
-        // Store pickup/dropoff addresses and coordinates
-        if (props.selectedLocations.pickup) {
-          localStorage.setItem('pickupAddress', props.selectedLocations.pickup.text || 'Pickup Location');
-          localStorage.setItem('pickupLat', String(props.selectedLocations.pickup.lat));
-          localStorage.setItem('pickupLng', String(props.selectedLocations.pickup.lng));
-        }
-        if (props.selectedLocations.destination) {
-          localStorage.setItem('dropoffAddress', props.selectedLocations.destination.text || 'Dropoff Location');
-          localStorage.setItem('dropoffLat', String(props.selectedLocations.destination.lat));
-          localStorage.setItem('dropoffLng', String(props.selectedLocations.destination.lng));
-        }
-      } catch {}
-      props.setConfirmRidePanel(true)
-    }} className='flex border-2 active:border-black  mb-2 rounded-xl w-full p-3 items-center justify-between '>
-            <img className='h-16'src='https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_552,w_552/v1555367310/assets/30/51e602-10bb-4e65-b122-e394d80a9c47/original/Final_UberX.png' alt=' ' /> 
-            <div className='-ml-2 w-1/2'>
-              <h4 className='font-medium text-base'>SafarGo <span><i className="ri-user-3-fill"></i>4</span></h4>
-              <h5 className='font-medium text-sm'>2 mins away </h5>
-              <p className='font-normal text-xs bg-grey-600'>Affordable, Compact rides</p>
-            </div>
-            <h2 className='text-lg font-semibold'>₹{fares.car}</h2> 
-        </div>
+    <div className="p-5">
+        <button 
+          className='p-1 text-center w-full mb-5 focus:outline-none'
+          onClick={() => props.setVehiclePanel(false)}
+        >
+          <i className="text-3xl text-gray-400 hover:text-gray-600 transition-colors ri-arrow-down-wide-line"></i>
+        </button>
+        
+        <h3 className='text-2xl font-bold mb-2 text-gray-900'>Choose a Vehicle</h3>
+        <p className='text-gray-600 text-sm mb-6'>Select the ride that suits you best</p>
+        
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className='flex items-center gap-2 p-3 mb-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm'
+          >
+            <i className="ri-error-warning-line"></i>
+            <span>{error}</span>
+          </motion.div>
+        )}
+        
+        {loading ? (
+          <div className="flex justify-center py-8">
+            <LoadingSpinner size="medium" text="Calculating fares..." />
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {/* Car Option */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+              onClick={()=>{
+                try { 
+                  localStorage.setItem('selectedVehicleType', 'car'); 
+                  localStorage.setItem('selectedFare', String(fares.car)); 
+                  if (props.selectedLocations.pickup) {
+                    localStorage.setItem('pickupAddress', props.selectedLocations.pickup.text || 'Pickup Location');
+                    localStorage.setItem('pickupLat', String(props.selectedLocations.pickup.lat));
+                    localStorage.setItem('pickupLng', String(props.selectedLocations.pickup.lng));
+                  }
+                  if (props.selectedLocations.destination) {
+                    localStorage.setItem('dropoffAddress', props.selectedLocations.destination.text || 'Dropoff Location');
+                    localStorage.setItem('dropoffLat', String(props.selectedLocations.destination.lat));
+                    localStorage.setItem('dropoffLng', String(props.selectedLocations.destination.lng));
+                  }
+                } catch {}
+                props.setConfirmRidePanel(true);
+              }} 
+              className='flex bg-white border-2 border-gray-200 hover:border-primary-500 active:border-primary-600 rounded-2xl p-4 items-center justify-between cursor-pointer transition-all duration-200 hover:shadow-medium group'
+            >
+              <img 
+                className='h-14 group-hover:scale-110 transition-transform duration-200'
+                src='https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_552,w_552/v1555367310/assets/30/51e602-10bb-4e65-b122-e394d80a9c47/original/Final_UberX.png' 
+                alt='Car' 
+              /> 
+              <div className='flex-1 ml-4'>
+                <div className='flex items-center gap-2'>
+                  <h4 className='font-semibold text-lg text-gray-900'>SafarGo</h4>
+                  <span className='flex items-center gap-1 text-sm text-gray-600'>
+                    <i className="ri-user-3-fill text-base"></i>4
+                  </span>
+                </div>
+                <p className='text-sm text-gray-600 flex items-center gap-1'>
+                  <i className="ri-time-line"></i>
+                  2 mins away
+                </p>
+                <p className='text-xs text-gray-500 mt-1'>Affordable, compact rides</p>
+              </div>
+              <div className='text-right'>
+                <h2 className='text-xl font-bold text-gray-900'>₹{fares.car}</h2>
+                <i className="ri-arrow-right-line text-gray-400 text-xl"></i>
+              </div>
+            </motion.div>
     <div onClick={()=>{
       // Store selected vehicle and location data
       try { 
