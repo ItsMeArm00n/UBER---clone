@@ -1,6 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const VehiclePanel = (props) => {
+  const [fares, setFares] = useState({
+    car: 199,
+    bike: 65,
+    auto: 118
+  });
+
+  useEffect(() => {
+    const fetchFare = async () => {
+      if (props.selectedLocations.pickup && props.selectedLocations.destination) {
+        try {
+          const response = await fetch('http://localhost:3000/fares/estimate', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              pickupLat: props.selectedLocations.pickup.lat,
+              pickupLng: props.selectedLocations.pickup.lng,
+              dropoffLat: props.selectedLocations.destination.lat,
+              dropoffLng: props.selectedLocations.destination.lng,
+            }),
+          });
+          const data = await response.json();
+          if (data.estimatedFare) {
+            // Apply multipliers for different vehicles
+            setFares({
+              car: Math.round(data.estimatedFare * 1.5), // Car is premium
+              bike: Math.round(data.estimatedFare * 0.5), // Bike cheaper
+              auto: Math.round(data.estimatedFare * 0.9), // Auto in between
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching fare:', error);
+        }
+      }
+    };
+    fetchFare();
+  }, [props.selectedLocations]);
   return (
     <div>
         <h5 className='p-1 text-center w-[93%] absolute top-0'onClick={()=>{
@@ -16,7 +54,7 @@ const VehiclePanel = (props) => {
               <h5 className='font-medium text-sm'>2 mins away </h5>
               <p className='font-normal text-xs bg-grey-600'>Affordable, Compact rides</p>
             </div>
-            <h2 className='text-lg font-semibold'>₹199</h2> 
+            <h2 className='text-lg font-semibold'>₹{fares.car}</h2> 
         </div>
         <div onClick={()=>{
             props.setConfirmRidePanel(true)
@@ -27,7 +65,7 @@ const VehiclePanel = (props) => {
             <h5 className='font-medium text-sm'>3 mins away </h5>
             <p className='font-normal text-xs bg-grey-600'>Affordable motorcycle rides</p>
           </div>
-          <h2 className='text-lg font-semibold'>₹65</h2> 
+          <h2 className='text-lg font-semibold'>₹{fares.bike}</h2> 
         </div>        
         <div onClick={()=>{
             props.setConfirmRidePanel(true)
@@ -38,7 +76,7 @@ const VehiclePanel = (props) => {
             <h5 className='font-medium text-sm'>2 mins away </h5>
             <p className='font-normal text-xs bg-grey-600'>Affordable auto rides</p>
           </div>
-          <h2 className='text-lg font-semibold'>₹118</h2> 
+          <h2 className='text-lg font-semibold'>₹{fares.auto}</h2> 
         </div>
     </div>
   )
