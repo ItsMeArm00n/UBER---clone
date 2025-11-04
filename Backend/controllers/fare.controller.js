@@ -15,13 +15,19 @@ function getDistance(lat1, lng1, lat2, lng2) {
 
 module.exports.getFareEstimate = async (req, res) => {
     try {
-        const { pickupLat, pickupLng, dropoffLat, dropoffLng } = req.body;
+        const { pickupLat, pickupLng, dropoffLat, dropoffLng } = req.body || {};
 
-        if (!pickupLat || !pickupLng || !dropoffLat || !dropoffLng) {
-            return res.status(400).json({ message: 'Missing coordinates' });
+        // Ensure all values are finite numbers (avoid false negatives like 0)
+        const pLat = Number(pickupLat);
+        const pLng = Number(pickupLng);
+        const dLat = Number(dropoffLat);
+        const dLng = Number(dropoffLng);
+
+        if (!Number.isFinite(pLat) || !Number.isFinite(pLng) || !Number.isFinite(dLat) || !Number.isFinite(dLng)) {
+            return res.status(400).json({ message: 'Invalid or missing coordinates' });
         }
 
-        const distance = getDistance(pickupLat, pickupLng, dropoffLat, dropoffLng);
+        const distance = getDistance(pLat, pLng, dLat, dLng);
 
         // Base fare: ₹50, rate: ₹10 per km
         const baseFare = 50;
@@ -29,7 +35,9 @@ module.exports.getFareEstimate = async (req, res) => {
         const estimatedFare = baseFare + (distance * ratePerKm);
 
         res.status(200).json({
-            distance: Math.round(distance * 100) / 100, // round to 2 decimals
+            baseFare,
+            ratePerKm,
+            distance: Math.round(distance * 100) / 100, // km, 2 decimals
             estimatedFare: Math.round(estimatedFare)
         });
     } catch (error) {
