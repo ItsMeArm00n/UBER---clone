@@ -17,6 +17,15 @@ const ConfirmRide = (props) => {
   const pickupAddress = localStorage.getItem('pickupAddress') || 'Pickup Location';
   const dropoffAddress = localStorage.getItem('dropoffAddress') || 'Dropoff Location';
   
+  // Determine selected vehicle image (from selection, with fallback by type)
+  const selectedVehicleType = (localStorage.getItem('selectedVehicleType') || 'car').toLowerCase();
+  const defaultVehicleImages = {
+    car: 'https://www.kumho.com.au/images/car-category/passenger-updated.png',
+    bike: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEBUREBIVFhUXFRYVFxcVGBYXFRUXFRUXGBgWFxgYICggGBolHRUVIjEhJSorLi4uFx8zODMsNygtLisBCgoKDg0OGxAQGi0mICUvLTYyMC0vLTA2Kys1Li01Ly0vLS0tLi03LS8tLS0tLS8tLy0tLy0tKy0vLS0tNTUtMv/AABEIALcBEwMBIgACEQEDEQH/xAAcAAEAAQUBAQAAAAAAAAAAAAAABwECAwUGBAj/xABBEAABAwIDBQUECAQFBQEAAAABAAIDBBEFEiEGBzFBURMiYXGBFDKRoSNCUmKCkrHBctHh8BUzQ7LCJJOis8MI/8QAGQEBAAMBAQAAAAAAAAAAAAAAAAIDBAEF/8QAKxEBAAICAQIFBAEFAQAAAAAAAAECAxEhBBITIjFBUXGRsfDBMkJh0eEz/9oADAMBAAIRAxEAPwCc',
+    auto: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxITEBUTEhIVFRUQFRAVEBYWFRUVFRUVFhcXFhcXFhYYHSggGBolGxUVITEhJSkrLi4uGB8zODMtNygtLisBCgoKDg0OGhAQGi0lHyUtLS0vLy0tLS8tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIALcBEwMBEQACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAAAQIEBQYDBwj/xABBEAACAQIDBAcFBAgGAwEAAAAAAQIDEQQFMQYSIUEyUWFxgZGhBxMiQrFSgsHRFCMkM3KywuEVQ2J0kvA0c6IW/8QAGgEBAAMBAQEAAAAAAAAAAAAAAAECAwQFBv/EADgRAQACAQIEBAMGBAYDAQAAAAABAgMEEQUSITEyQVFxIoGxEzNCkaHRFGHB4RUjUmJy8CQ00gb/2gAMAwEAAhEDEQA/APc'
+  };
+  const selectedVehicleImage = localStorage.getItem('selectedVehicleImage') || defaultVehicleImages[selectedVehicleType] || defaultVehicleImages.car;
+  
   const handleConfirmRide = () => {
     // Get ride details from localStorage and props
     const pickupAddress = localStorage.getItem('pickupAddress') || 'Pickup Location';
@@ -100,7 +109,7 @@ const ConfirmRide = (props) => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.1 }}
             className='h-24 drop-shadow-lg'
-            src='https://www.kumho.com.au/images/car-category/passenger-updated.png'
+            src={selectedVehicleImage}
             alt='Vehicle'
           />
 
