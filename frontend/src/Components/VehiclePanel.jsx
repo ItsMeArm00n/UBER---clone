@@ -6,10 +6,14 @@ const VehiclePanel = (props) => {
     bike: 65,
     auto: 118
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchFare = async () => {
       if (props.selectedLocations.pickup && props.selectedLocations.destination) {
+        setLoading(true);
+        setError(null);
         try {
           const response = await fetch('http://localhost:3000/fares/estimate', {
             method: 'POST',
@@ -37,10 +41,14 @@ const VehiclePanel = (props) => {
               localStorage.setItem('fareCar', String(nextFares.car));
               localStorage.setItem('fareBike', String(nextFares.bike));
               localStorage.setItem('fareAuto', String(nextFares.auto));
+              localStorage.setItem('fareDistance', String(data.distance || 0));
             } catch {}
           }
         } catch (error) {
           console.error('Error fetching fare:', error);
+          setError('Unable to calculate fare');
+        } finally {
+          setLoading(false);
         }
       }
     };
@@ -52,6 +60,8 @@ const VehiclePanel = (props) => {
               props.setVehiclePanel(false)
         }}><i className="text-3xl text-gray-400 ri-arrow-down-wide-line"></i></h5>
         <h3 className='text-2xl font-semibold mb-5'>Choose a Vehicle</h3>
+        {error && <p className='text-red-500 text-sm mb-3'>{error}</p>}
+        {loading && <p className='text-gray-500 text-sm mb-3 animate-pulse'>Calculating fares...</p>}
     <div onClick={()=>{
       try { localStorage.setItem('selectedVehicleType', 'car'); localStorage.setItem('selectedFare', String(fares.car)); } catch {}
       props.setConfirmRidePanel(true)
