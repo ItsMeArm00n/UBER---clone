@@ -197,6 +197,8 @@ const VehiclePanel = (props) => {
           <h2 className='text-lg font-semibold'>₹{fares.auto}</h2> 
         </div>
     </div>
+        )}
+    </div>
   )
 }
 
