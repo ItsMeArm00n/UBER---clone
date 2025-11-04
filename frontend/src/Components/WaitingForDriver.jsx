@@ -8,6 +8,10 @@ const WaitingForDriver = (props) => {
                        localStorage.getItem('fareBase') || 
                        '199';
   
+  // Get pickup and dropoff addresses from localStorage
+  const pickupAddress = localStorage.getItem('pickupAddress') || 'Pickup Location';
+  const dropoffAddress = localStorage.getItem('dropoffAddress') || 'Dropoff Location';
+  
   return (
     <div>
       <motion.h5
@@ -103,8 +107,8 @@ const WaitingForDriver = (props) => {
                 <i className="text-xl ri-map-pin-user-fill text-primary-600"></i>
               </div>
               <div className="flex-1">
-                <h3 className='text-base font-semibold text-gray-900'>562/11-A</h3>
-                <p className='text-sm text-gray-600'>Kankariya Tablab, Delhi</p>
+                <h3 className='text-base font-semibold text-gray-900'>Pickup</h3>
+                <p className='text-sm text-gray-600'>{pickupAddress}</p>
               </div>
             </div>
 
@@ -114,8 +118,8 @@ const WaitingForDriver = (props) => {
                 <i className="text-xl ri-map-pin-2-fill text-accent-green-600"></i>
               </div>
               <div className="flex-1">
-                <h3 className='text-base font-semibold text-gray-900'>562/11-A</h3>
-                <p className='text-sm text-gray-600'>Kankariya Tablab, Delhi</p>
+                <h3 className='text-base font-semibold text-gray-900'>Destination</h3>
+                <p className='text-sm text-gray-600'>{dropoffAddress}</p>
               </div>
             </div>
 

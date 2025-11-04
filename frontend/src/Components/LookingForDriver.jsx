@@ -9,6 +9,10 @@ const LookingForDriver = (props) => {
                        localStorage.getItem('fareBase') || 
                        '199';
   
+  // Get pickup and dropoff addresses from localStorage
+  const pickupAddress = localStorage.getItem('pickupAddress') || 'Pickup Location';
+  const dropoffAddress = localStorage.getItem('dropoffAddress') || 'Dropoff Location';
+  
   return (
     <div>
       <motion.h5
@@ -60,7 +64,7 @@ const LookingForDriver = (props) => {
               ease: "easeInOut"
             }}
             className='h-24 drop-shadow-lg'
-            src='https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_552,w_552/v1555367310/assets/30/51e602-10bb-4e65-b122-e394d80a9c47/original/Final_UberX.png'
+            src='https://www.kumho.com.au/images/car-category/passenger-updated.png'
             alt='Vehicle'
           />
 
@@ -76,8 +80,8 @@ const LookingForDriver = (props) => {
                 <i className="text-xl ri-map-pin-user-fill text-primary-600"></i>
               </div>
               <div className="flex-1">
-                <h3 className='text-base font-semibold text-gray-900'>562/11-A</h3>
-                <p className='text-sm text-gray-600'>Kankariya Tablab, Delhi</p>
+                <h3 className='text-base font-semibold text-gray-900'>Pickup</h3>
+                <p className='text-sm text-gray-600'>{pickupAddress}</p>
               </div>
             </div>
 
@@ -87,8 +91,8 @@ const LookingForDriver = (props) => {
                 <i className="text-xl ri-map-pin-2-fill text-accent-green-600"></i>
               </div>
               <div className="flex-1">
-                <h3 className='text-base font-semibold text-gray-900'>562/11-A</h3>
-                <p className='text-sm text-gray-600'>Kankariya Tablab, Delhi</p>
+                <h3 className='text-base font-semibold text-gray-900'>Destination</h3>
+                <p className='text-sm text-gray-600'>{dropoffAddress}</p>
               </div>
             </div>
 

@@ -120,27 +120,16 @@ const VehiclePanel = (props) => {
               className='flex bg-white border-2 border-gray-200 hover:border-primary-500 active:border-primary-600 rounded-2xl p-4 items-center justify-between cursor-pointer transition-all duration-200 hover:shadow-medium group'
             >
               <img 
-                className='h-14 group-hover:scale-110 transition-transform duration-200'
-                src='https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_552,w_552/v1555367310/assets/30/51e602-10bb-4e65-b122-e394d80a9c47/original/Final_UberX.png' 
+                className='h-10 group-hover:scale-110 transition-transform duration-200'
+                src='https://www.kumho.com.au/images/car-category/passenger-updated.png' 
                 alt='Car' 
               /> 
-              <div className='flex-1 ml-4'>
-                <div className='flex items-center gap-2'>
-                  <h4 className='font-semibold text-lg text-gray-900'>SafarGo</h4>
-                  <span className='flex items-center gap-1 text-sm text-gray-600'>
-                    <i className="ri-user-3-fill text-base"></i>4
-                  </span>
-                </div>
-                <p className='text-sm text-gray-600 flex items-center gap-1'>
-                  <i className="ri-time-line"></i>
-                  2 mins away
-                </p>
-                <p className='text-xs text-gray-500 mt-1'>Affordable, compact rides</p>
+              <div className='-ml-2 w-1/2'>
+                <h4 className='font-medium text-base'>SafarGo <span><i className="ri-user-3-fill"></i>4</span></h4>
+                <h5 className='font-medium text-sm'>2 mins away</h5>
+                <p className='font-normal text-xs text-gray-600'>Affordable, compact rides</p>
               </div>
-              <div className='text-right'>
-                <h2 className='text-xl font-bold text-gray-900'>₹{fares.car}</h2>
-                <i className="ri-arrow-right-line text-gray-400 text-xl"></i>
-              </div>
+              <h2 className='text-lg font-semibold'>₹{fares.car}</h2>
             </motion.div>
     <div onClick={()=>{
       // Store selected vehicle and location data
