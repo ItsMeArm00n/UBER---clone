@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import socket from '../utils/socket'
 
@@ -68,7 +68,27 @@ const Riding = () => {
             <div className='flex items-center gap-5 p-3'>
               <i className="text-lg ri-currency-line"></i>
               <div>
-                <h3 className='text-lg font-medium'>₹199</h3>
+                <h3 className='text-lg font-medium'>
+                  {(() => {
+                    // prefer an explicitly selected fare from VehiclePanel
+                    const selectedFare = Number(localStorage.getItem('selectedFare'))
+                    if (Number.isFinite(selectedFare) && selectedFare > 0) {
+                      return `₹${selectedFare}`
+                    }
+                    // fallback to per-vehicle stored values
+                    const vehicle = (localStorage.getItem('selectedVehicleType') || 'car').toLowerCase()
+                    const byVehicle = Number(localStorage.getItem(
+                      vehicle === 'bike' ? 'fareBike' : vehicle === 'auto' ? 'fareAuto' : 'fareCar'
+                    ))
+                    if (Number.isFinite(byVehicle) && byVehicle > 0) {
+                      return `₹${byVehicle}`
+                    }
+                    // ultimate fallback to base estimate
+                    const base = Number(localStorage.getItem('fareBase'))
+                    if (Number.isFinite(base) && base > 0) return `₹${Math.round(base)}`
+                    return 'Calculating…'
+                  })()}
+                </h3>
                 <p className='text-sm -mt-1 text-gray-600'>Cash</p>
               </div>
             </div>
