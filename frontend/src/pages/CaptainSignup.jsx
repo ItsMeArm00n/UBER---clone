@@ -17,10 +17,16 @@ const CaptainSignup = () => {
   const [vehiclePlate, setVehiclePlate] = useState('');
   const [vehicleCapacity, setVehicleCapacity] = useState('');
   const [vehicleType, setVehicleType] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { captain, setCaptain } = React.useContext(CaptainDataContext);
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    console.log('Captain signup form submitted');
 
     const captainData = {
       fullname: {
@@ -36,18 +42,32 @@ const CaptainSignup = () => {
         vehicleType: vehicleType,
       },
     };
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData);
-    if (response.status === 201) {
-      const data = response.data;
-      setCaptain(data.captain);
-      localStorage.setItem('token', data.token);
-      navigate('/captain-home');
-    }
 
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setPassword('');
+    console.log('Sending captain signup request:', captainData);
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData);
+      console.log('Captain signup response:', response);
+      
+      if (response.status === 201) {
+        const data = response.data;
+        setCaptain(data.captain);
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('captainId', data.captain._id); // Store captain ID
+        console.log('Captain signup successful, navigating to /captain-home');
+        navigate('/captain-home');
+      }
+
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
+    } catch (error) {
+      console.error('Captain signup error:', error);
+      setError(error.response?.data?.message || 'Failed to create captain account. Please try again.');
+    } finally {
+      setLoading(false);
+    }
     setVehicleColor('');
     setVehiclePlate('');
     setVehicleCapacity('');
@@ -64,6 +84,13 @@ const CaptainSignup = () => {
       {/* Form */}
       <div className="flex-1 px-6 pb-6">
         <form onSubmit={submitHandler} className="w-full max-w-lg mx-auto space-y-8">
+          {/* Error Message */}
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+              {error}
+            </div>
+          )}
+
           {/* Name Section */}
           <div>
             <h3 className="text-xl font-semibold mb-4">What's our Captain's name</h3>
@@ -178,8 +205,8 @@ const CaptainSignup = () => {
 
           {/* Submit Button */}
           <div className="pt-4">
-            <Button type="submit" variant="primary" fullWidth size="large">
-              Create Captain Account
+            <Button type="submit" variant="primary" fullWidth size="large" disabled={loading}>
+              {loading ? 'Creating Captain Account...' : 'Create Captain Account'}
             </Button>
           </div>
 

@@ -27,6 +27,7 @@ const CaptainLogin = () => {
       const data = response.data
       setCaptain(data.captain)
       localStorage.setItem('token', data.token)
+      localStorage.setItem('captainId', data.captain._id) // Store captain ID for socket events
       navigate('/captain-home')
     }
     setEmail('')
